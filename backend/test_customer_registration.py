@@ -1,9 +1,11 @@
 """Test customer registration"""
+from typing import Optional
 from shared.auth_utils import hash_password
 from shared.models import User, Shop, RoleEnum
 from shared.database import SessionLocal, engine, Base
 from sqlalchemy.orm import Session
 import sys
+
 sys.stdout.reconfigure(encoding='utf-8', errors='ignore')
 
 
