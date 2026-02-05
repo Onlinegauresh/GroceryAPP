@@ -1,0 +1,13 @@
+{% extends "admin/admin_base.html" %} {% block title %}Admin - Error{% endblock
+%} {% block page_title %}Error{% endblock %} {% block content %}
+<div style="text-align: center; padding: 60px 20px">
+  <h1 style="font-size: 48px; color: #d32f2f; margin-bottom: 20px">⚠️ Error</h1>
+  <p style="font-size: 18px; color: #666; margin-bottom: 30px">{{ error }}</p>
+  <div
+    style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap"
+  >
+    <a href="/admin/" class="btn btn-primary">Back to Dashboard</a>
+    <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+  </div>
+</div>
+{% endblock %}

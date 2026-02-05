@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - SmartKirana</title>
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <style>
+      .auth-page {
+        background: linear-gradient(135deg, #1a472a 0%, #0d2817 100%);
+      }
+
+      .login-container {
+        background: white;
+      }
+
+      .logo-area .badge {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .badge {
+        background: #e74c3c;
+      }
+
+      .btn-login,
+      button[type="submit"] {
+        background: linear-gradient(135deg, #1a472a 0%, #0d2817 100%);
+      }
+
+      .register-link a {
+        color: #1a472a;
+      }
+
+      .register-link a:hover {
+        color: #e74c3c;
+      }
+    </style>
+  </head>
+  <body class="auth-page">
+    <div class="auth-container login-container">
+      <div class="logo-area">
+        <h1>🛡️ SmartKirana</h1>
+        <div class="badge">ADMIN ONLY</div>
+        <p>Administrator Login</p>
+      </div>
+
+      {% if error %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/admin/login">
+        <div class="form-group">
+          <label for="phone">📱 Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Admin phone number"
+            required
+            autocomplete="tel"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔑 Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" class="btn-login">Login to Admin Panel</button>
+      </form>
+
+      <div class="divider">New admin?</div>
+
+      <div class="register-link">
+        <a href="/admin/register">Register as Admin →</a>
+      </div>
+
+      <div class="back-link">
+        <a href="/shop/">← Back to Customer Shop</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,570 @@
+{% extends "shop/shop_base.html" %} {% block title %}Shop - Checkout{% endblock
+%} {% block content %}
+<h2 class="page-title">Checkout</h2>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px">
+  <!-- Checkout Form -->
+  <main>
+    <div
+      class="card"
+      style="
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-bottom: 20px;
+      "
+    >
+      <h3
+        style="
+          color: #1a472a;
+          margin-bottom: 20px;
+          padding-bottom: 15px;
+          border-bottom: 2px solid #27c44f;
+        "
+      >
+        Shipping Information
+      </h3>
+
+      <form action="/shop/checkout/place-order" method="post">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
+          <div>
+            <label
+              style="
+                display: block;
+                margin-bottom: 5px;
+                color: #1a472a;
+                font-weight: 500;
+              "
+              >First Name</label
+            >
+            <input
+              type="text"
+              name="first_name"
+              required
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+            />
+          </div>
+          <div>
+            <label
+              style="
+                display: block;
+                margin-bottom: 5px;
+                color: #1a472a;
+                font-weight: 500;
+              "
+              >Last Name</label
+            >
+            <input
+              type="text"
+              name="last_name"
+              required
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+            />
+          </div>
+        </div>
+
+        <div style="margin-top: 15px">
+          <label
+            style="
+              display: block;
+              margin-bottom: 5px;
+              color: #1a472a;
+              font-weight: 500;
+            "
+            >Email Address</label
+          >
+          <input
+            type="email"
+            name="email"
+            required
+            style="
+              width: 100%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              font-size: 14px;
+            "
+          />
+        </div>
+
+        <div style="margin-top: 15px">
+          <label
+            style="
+              display: block;
+              margin-bottom: 5px;
+              color: #1a472a;
+              font-weight: 500;
+            "
+            >Phone Number</label
+          >
+          <input
+            type="tel"
+            name="customer_phone"
+            required
+            style="
+              width: 100%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              font-size: 14px;
+            "
+          />
+        </div>
+
+        <div style="margin-top: 15px">
+          <label
+            style="
+              display: block;
+              margin-bottom: 5px;
+              color: #1a472a;
+              font-weight: 500;
+            "
+            >Street Address</label
+          >
+          <input
+            type="text"
+            name="address"
+            required
+            style="
+              width: 100%;
+              padding: 10px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              font-size: 14px;
+            "
+          />
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+          "
+        >
+          <div>
+            <label
+              style="
+                display: block;
+                margin-bottom: 5px;
+                color: #1a472a;
+                font-weight: 500;
+              "
+              >City</label
+            >
+            <input
+              type="text"
+              name="city"
+              required
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+            />
+          </div>
+          <div>
+            <label
+              style="
+                display: block;
+                margin-bottom: 5px;
+                color: #1a472a;
+                font-weight: 500;
+              "
+              >State/Province</label
+            >
+            <input
+              type="text"
+              name="state"
+              required
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+            />
+          </div>
+        </div>
+
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+          "
+        >
+          <div>
+            <label
+              style="
+                display: block;
+                margin-bottom: 5px;
+                color: #1a472a;
+                font-weight: 500;
+              "
+              >ZIP Code</label
+            >
+            <input
+              type="text"
+              name="zip_code"
+              required
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+            />
+          </div>
+          <div>
+            <label
+              style="
+                display: block;
+                margin-bottom: 5px;
+                color: #1a472a;
+                font-weight: 500;
+              "
+              >Country</label
+            >
+            <input
+              type="text"
+              name="country"
+              required
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+              "
+              value="USA"
+            />
+          </div>
+        </div>
+
+        <!-- Shipping Method -->
+        <div
+          style="
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+          "
+        >
+          <h3 style="color: #1a472a; margin-bottom: 20px">Shipping Method</h3>
+
+          <label
+            style="
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 15px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              margin-bottom: 10px;
+              cursor: pointer;
+              background-color: #f9f9f9;
+            "
+          >
+            <input
+              type="radio"
+              name="shipping_method"
+              value="standard"
+              checked
+            />
+            <div>
+              <strong>Standard Shipping</strong>
+              <p style="font-size: 12px; color: #666; margin: 0">
+                Delivery in 3-5 business days
+              </p>
+            </div>
+            <div style="margin-left: auto; color: #27c44f; font-weight: bold">
+              FREE
+            </div>
+          </label>
+
+          <label
+            style="
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 15px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              cursor: pointer;
+            "
+          >
+            <input type="radio" name="shipping_method" value="express" />
+            <div>
+              <strong>Express Shipping</strong>
+              <p style="font-size: 12px; color: #666; margin: 0">
+                Delivery in 1-2 business days
+              </p>
+            </div>
+            <div style="margin-left: auto; color: #1a472a; font-weight: bold">
+              +$10.00
+            </div>
+          </label>
+        </div>
+
+        <!-- Payment Method -->
+        <div
+          style="
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+          "
+        >
+          <h3 style="color: #1a472a; margin-bottom: 20px">Payment Method</h3>
+
+          <label
+            style="
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 15px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              margin-bottom: 10px;
+              cursor: pointer;
+              background-color: #f9f9f9;
+            "
+          >
+            <input
+              type="radio"
+              name="payment_method"
+              value="credit_card"
+              checked
+            />
+            <div>
+              <strong>Credit/Debit Card</strong>
+              <p style="font-size: 12px; color: #666; margin: 0">
+                Visa, Mastercard, American Express
+              </p>
+            </div>
+          </label>
+
+          <label
+            style="
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 15px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              margin-bottom: 10px;
+              cursor: pointer;
+            "
+          >
+            <input type="radio" name="payment_method" value="paypal" />
+            <div>
+              <strong>PayPal</strong>
+              <p style="font-size: 12px; color: #666; margin: 0">
+                Pay securely with your PayPal account
+              </p>
+            </div>
+          </label>
+
+          <label
+            style="
+              display: flex;
+              align-items: center;
+              gap: 15px;
+              padding: 15px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              cursor: pointer;
+            "
+          >
+            <input type="radio" name="payment_method" value="bank_transfer" />
+            <div>
+              <strong>Bank Transfer</strong>
+              <p style="font-size: 12px; color: #666; margin: 0">
+                Direct bank transfer
+              </p>
+            </div>
+          </label>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div style="margin-top: 30px">
+          <label
+            style="
+              display: flex;
+              align-items: flex-start;
+              gap: 10px;
+              font-size: 14px;
+            "
+          >
+            <input
+              type="checkbox"
+              name="terms"
+              required
+              style="margin-top: 3px"
+            />
+            <span
+              >I agree to the
+              <a href="#" style="color: #27c44f">Terms of Service</a> and
+              <a href="#" style="color: #27c44f">Privacy Policy</a></span
+            >
+          </label>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px">
+          <a
+            href="/shop/cart"
+            class="btn btn-secondary"
+            style="flex: 1; text-align: center"
+            >← Back to Cart</a
+          >
+          <button type="submit" class="btn btn-primary" style="flex: 1">
+            Place Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Order Summary -->
+  <aside>
+    <div
+      class="card"
+      style="
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        position: sticky;
+        top: 200px;
+      "
+    >
+      <h3
+        style="
+          color: #1a472a;
+          margin-bottom: 20px;
+          padding-bottom: 15px;
+          border-bottom: 2px solid #27c44f;
+        "
+      >
+        Order Summary
+      </h3>
+
+      <!-- Items -->
+      <div style="max-height: 300px; overflow-y: auto; margin-bottom: 20px">
+        {% for item in cart_items %}
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+          "
+        >
+          <div>
+            <strong>{{ item.name }}</strong>
+            <div style="color: #666; font-size: 12px">
+              Qty: {{ item.quantity }}
+            </div>
+          </div>
+          <div style="text-align: right; font-weight: bold">
+            ${{ item.total | round(2) }}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Summary -->
+      <div style="border-top: 1px solid #eee; padding-top: 15px">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 13px;
+          "
+        >
+          <span>Subtotal:</span>
+          <span>${{ total_amount | round(2) }}</span>
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 13px;
+          "
+        >
+          <span>Shipping:</span>
+          <span>FREE</span>
+        </div>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 13px;
+          "
+        >
+          <span>Tax (10%):</span>
+          <span>${{ (total_amount * 0.1) | round(2) }}</span>
+        </div>
+        <div
+          style="
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: bold;
+            color: #1a472a;
+          "
+        >
+          <span>Total:</span>
+          <span style="color: #27c44f"
+            >${{ (total_amount + (total_amount * 0.1)) | round(2) }}</span
+          >
+        </div>
+      </div>
+
+      <!-- Trust Badges -->
+      <div
+        style="
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid #eee;
+          text-align: center;
+          color: #999;
+          font-size: 12px;
+        "
+      >
+        <p style="margin-bottom: 10px">🛡️ Secure Checkout</p>
+        <p style="margin-bottom: 10px">✅ Money Back Guarantee</p>
+        <p>📞 Customer Support 24/7</p>
+      </div>
+    </div>
+  </aside>
+</div>
+{% endblock %}

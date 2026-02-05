@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Login - SmartKirana</title>
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <style>
+      .auth-page {
+        background: linear-gradient(135deg, #27c44f 0%, #1a472a 100%);
+      }
+
+      .login-container {
+        background: white;
+      }
+
+      .logo-area h1 {
+        color: #27c44f;
+      }
+
+      .btn-login,
+      button[type="submit"] {
+        background: linear-gradient(135deg, #27c44f 0%, #1fa63a 100%);
+      }
+
+      .btn-login:hover {
+        box-shadow: 0 5px 20px rgba(39, 196, 79, 0.3);
+      }
+
+      input[type="tel"]:focus,
+      input[type="password"]:focus {
+        border-color: #27c44f;
+        box-shadow: 0 0 0 3px rgba(39, 196, 79, 0.1);
+      }
+
+      .register-link a {
+        color: #27c44f;
+      }
+
+      .register-link a:hover {
+        color: #1fa63a;
+      }
+    </style>
+  </head>
+  <body class="auth-page">
+    <div class="auth-container login-container">
+      <div class="logo-area">
+        <h1>🛒 SmartKirana</h1>
+        <p>Customer Login</p>
+      </div>
+
+      {% if error %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="/shop/login">
+        <div class="form-group">
+          <label for="phone">📱 Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="10-digit mobile number"
+            required
+            autocomplete="tel"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔑 Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" class="btn-login">Login to My Account</button>
+      </form>
+
+      <div class="divider">Don't have an account?</div>
+
+      <div class="register-link">
+        <a href="/shop/register">Create a New Account →</a>
+      </div>
+
+      <div class="back-link">
+        <a href="/shop/">← Back to Shopping</a>
+      </div>
+    </div>
+  </body>
+</html>

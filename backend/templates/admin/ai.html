@@ -1,0 +1,189 @@
+{% extends "admin/admin_base.html" %} {% block title %}Admin - AI Insights{%
+endblock %} {% block page_title %}AI-Powered Insights{% endblock %} {% block
+content %}
+<div class="page-title">AI-Powered Business Insights</div>
+
+<!-- AI Dashboard -->
+<div class="card">
+  <div class="card-header">
+    <h3>🤖 Smart Recommendations</h3>
+  </div>
+  <p style="margin-bottom: 20px; color: #666">
+    AI-powered insights based on your business data
+  </p>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+    <!-- Stock Recommendations -->
+    <div
+      style="
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 4px;
+        border-left: 4px solid #ff9800;
+      "
+    >
+      <h4 style="color: #ff9800; margin-bottom: 10px">
+        📦 Stock Recommendations
+      </h4>
+      {% if reorder_suggestions.get('items', []) %}
+      <ul style="margin: 0; padding-left: 20px">
+        {% for item in reorder_suggestions.get('items', []) %}
+        <li style="margin-bottom: 8px">
+          <strong>{{ item.name }}</strong> - Stock: {{ item.current_stock |
+          default(0) }} units
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p style="color: #999">Your inventory looks good!</p>
+      {% endif %}
+    </div>
+
+    <!-- Sales Forecast -->
+    <div
+      style="
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 4px;
+        border-left: 4px solid #27c44f;
+      "
+    >
+      <h4 style="color: #27c44f; margin-bottom: 10px">📈 Sales Forecast</h4>
+      {% if sales_forecast %}
+      <ul style="margin: 0; padding-left: 20px">
+        <li style="margin-bottom: 8px">{{ sales_forecast }}</li>
+      </ul>
+      {% else %}
+      <p style="color: #999">Analyzing historical data...</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Product Performance Analysis -->
+<div class="card">
+  <div class="card-header">
+    <h3>📊 Product Performance</h3>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+    <!-- Best Sellers -->
+    <div>
+      <h4 style="margin-bottom: 15px; color: #1a472a">Top Selling Products</h4>
+      <table style="width: 100%; font-size: 14px">
+        <thead>
+          <tr style="background-color: #f5f5f5">
+            <th style="padding: 8px; text-align: left">Product</th>
+            <th style="padding: 8px; text-align: right">Sales</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if best_sellers %} {% for product in best_sellers %}
+          <tr style="border-bottom: 1px solid #eee">
+            <td style="padding: 8px">{{ product.name[:30] }}</td>
+            <td style="padding: 8px; text-align: right; color: #27c44f">
+              <strong>{{ product.popularity_score | default(0) }}</strong>
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td colspan="2" style="padding: 8px; color: #999">
+              No data available
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Underperformers -->
+    <div>
+      <h4 style="margin-bottom: 15px; color: #1a472a">
+        Products Needing Attention
+      </h4>
+      <table style="width: 100%; font-size: 14px">
+        <thead>
+          <tr style="background-color: #f5f5f5">
+            <th style="padding: 8px; text-align: left">Product</th>
+            <th style="padding: 8px; text-align: right">Sales</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if underperformers %} {% for product in underperformers %}
+          <tr style="border-bottom: 1px solid #eee">
+            <td style="padding: 8px">{{ product.name[:30] }}</td>
+            <td style="padding: 8px; text-align: right; color: #d32f2f">
+              <strong>{{ product.popularity_score | default(0) }}</strong>
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td colspan="2" style="padding: 8px; color: #999">
+              No data available
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Customer Insights -->
+<div class="card">
+  <div class="card-header">
+    <h3>👥 Customer Insights</h3>
+  </div>
+
+  <div class="stats-grid" style="margin-bottom: 0">
+    <div class="stat-card">
+      <h3>{{ total_customers | default(0) }}</h3>
+      <p>Total Customers</p>
+    </div>
+    <div class="stat-card">
+      <h3>
+        ${{ avg_customer_lifetime_value | round(2) if
+        avg_customer_lifetime_value else '0.00' }}
+      </h3>
+      <p>Avg Customer Value</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ repeat_customer_rate | default(0) }}%</h3>
+      <p>Repeat Customer Rate</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ avg_orders_per_customer | default(0) }}</h3>
+      <p>Avg Orders/Customer</p>
+    </div>
+  </div>
+</div>
+
+<!-- Action Items -->
+<div class="card">
+  <div class="card-header">
+    <h3>✅ Recommended Actions</h3>
+  </div>
+
+  {% if actions %}
+  <ol style="padding-left: 20px">
+    {% for action in actions %}
+    <li style="margin-bottom: 10px; color: #333">
+      {{ action.text | default(action) }}
+    </li>
+    {% endfor %}
+  </ol>
+  {% else %}
+  <div style="padding: 20px; text-align: center; color: #999">
+    <p>
+      Based on your current business metrics, there are no urgent actions
+      recommended.
+    </p>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Last Updated -->
+<div style="text-align: center; padding: 20px; color: #999; font-size: 12px">
+  Last updated: {{ last_update | default('Just now') }}
+</div>
+{% endblock %}

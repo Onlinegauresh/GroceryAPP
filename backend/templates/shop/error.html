@@ -1,0 +1,63 @@
+{% extends "shop/shop_base.html" %} {% block title %}Shop - Error{% endblock %}
+{% block content %}
+<div
+  style="
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  "
+>
+  <div style="font-size: 80px; margin-bottom: 20px">⚠️</div>
+  <h1 style="font-size: 48px; color: #dc3545; margin-bottom: 20px">
+    Oops! Something went wrong
+  </h1>
+  <p style="font-size: 18px; color: #666; margin-bottom: 30px">{{ error }}</p>
+
+  <div
+    style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap"
+  >
+    <a href="/shop" class="btn btn-primary" style="display: inline-block"
+      >Back to Home</a
+    >
+    <a
+      href="/shop/products"
+      class="btn btn-secondary"
+      style="display: inline-block"
+      >Continue Shopping</a
+    >
+    <a
+      href="javascript:history.back()"
+      class="btn btn-outline"
+      style="
+        display: inline-block;
+        border: 2px solid #6c757d;
+        color: #6c757d;
+        background: white;
+      "
+      >Go Back</a
+    >
+  </div>
+
+  <!-- Help Section -->
+  <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #eee">
+    <h3 style="color: #1a472a; margin-bottom: 20px">Need Help?</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+      <div style="background: #f9f9f9; padding: 20px; border-radius: 4px">
+        <p style="font-size: 24px; margin-bottom: 10px">📧</p>
+        <p style="color: #1a472a; font-weight: bold; margin-bottom: 5px">
+          Email Support
+        </p>
+        <p style="color: #666; font-size: 14px">support@groceryshop.com</p>
+      </div>
+      <div style="background: #f9f9f9; padding: 20px; border-radius: 4px">
+        <p style="font-size: 24px; margin-bottom: 10px">📞</p>
+        <p style="color: #1a472a; font-weight: bold; margin-bottom: 5px">
+          Call Us
+        </p>
+        <p style="color: #666; font-size: 14px">1-800-GROCERY</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

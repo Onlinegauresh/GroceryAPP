@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Registration - SmartKirana</title>
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #1a472a 0%, #0d2817 100%);
+      }
+
+      .auth-page {
+        padding: 1.25rem 1rem;
+      }
+
+      .register-container {
+        max-width: 30rem;
+        padding: 2.5rem;
+      }
+
+      .logo-area {
+        margin-bottom: 1.875rem;
+      }
+
+      .logo-area h1 {
+        color: #1a472a;
+        font-size: 32px;
+        margin-bottom: 5px;
+      }
+
+      .logo-area .badge {
+        display: inline-block;
+        background: #e74c3c;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+
+      .logo-area p {
+        color: #999;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="tel"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        border-color: #1a472a;
+        box-shadow: 0 0 0 3px rgba(26, 71, 42, 0.1);
+      }
+
+      .error-message,
+      .error-list {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        border: 1px solid #f5c6cb;
+      }
+
+      .error-list ul {
+        list-style-position: inside;
+        margin: 0;
+      }
+
+      .error-list li {
+        margin-bottom: 8px;
+      }
+
+      .warning-box {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        border: 1px solid #ffeeba;
+      }
+
+      .btn-register {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #1a472a 0%, #0d2817 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+      }
+
+      .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(26, 71, 42, 0.3);
+      }
+
+      .divider {
+        text-align: center;
+        margin: 25px 0;
+        color: #999;
+        font-size: 14px;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .login-link a {
+        color: #1a472a;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .login-link a:hover {
+        color: #e74c3c;
+        text-decoration: underline;
+      }
+
+      .back-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .back-link a {
+        color: #999;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+
+      .back-link a:hover {
+        color: #1a472a;
+      }
+
+      @media (max-width: 480px) {
+        .register-container {
+          padding: 30px 20px;
+        }
+
+        .logo-area h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <div class="logo-area">
+        <h1>🛡️ SmartKirana</h1>
+        <div class="badge">ADMIN ONLY</div>
+        <p>Create Admin Account</p>
+      </div>
+
+      <div class="warning-box">
+        ⚠️ Admin registration requires an authorization code. Contact your
+        system administrator.
+      </div>
+
+      {% if error %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %} {% if errors %}
+      <div class="error-list">
+        <ul>
+          {% for err in errors %}
+          <li>{{ err }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <form method="POST" action="/admin/register">
+        <div class="form-group">
+          <label for="name">👤 Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Administrator name"
+            required
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">📱 Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Admin phone number"
+            required
+            autocomplete="tel"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">✉️ Email (Optional)</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="admin.email@example.com"
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔑 Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="At least 6 characters"
+            required
+            autocomplete="new-password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm_password">✓ Confirm Password</label>
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            placeholder="Confirm your password"
+            required
+            autocomplete="new-password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="admin_code">🔐 Admin Code</label>
+          <input
+            type="password"
+            id="admin_code"
+            name="admin_code"
+            placeholder="Authorization code"
+            required
+            autocomplete="off"
+          />
+        </div>
+
+        <button type="submit" class="btn-register">Create Admin Account</button>
+      </form>
+
+      <div class="divider">Already an admin?</div>
+
+      <div class="login-link">
+        <a href="/admin/login">Login Here →</a>
+      </div>
+
+      <div class="back-link">
+        <a href="/shop/">← Back to Customer Shop</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,93 @@
+{% extends "base.html" %} {% block title %}SmartKirana - Users{% endblock %} {%
+block content %}
+<div class="page-header">
+  <h1>Users</h1>
+  <p class="subtitle">Total: <strong>{{ total }}</strong> users</p>
+</div>
+
+{% if users %}
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Shop ID</th>
+        <th>Status</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td><code>{{ user.id }}</code></td>
+        <td><strong>{{ user.name }}</strong></td>
+        <td>{{ user.phone or 'N/A' }}</td>
+        <td>{{ user.email or 'N/A' }}</td>
+        <td>
+          <span
+            class="badge {% if user.role == 'admin' %}badge-danger {% elif user.role == 'owner' %}badge-warning {% elif user.role == 'staff' %}badge-info {% else %}badge-secondary{% endif %}"
+          >
+            {{ user.role if user.role else 'customer' }}
+          </span>
+        </td>
+        <td>{{ user.shop_id or '-' }}</td>
+        <td>
+          <span
+            class="badge {% if user.is_active %}badge-success {% else %}badge-danger{% endif %}"
+          >
+            {% if user.is_active %}Active{% else %}Inactive{% endif %}
+          </span>
+        </td>
+        <td>
+          {{ user.created_at.strftime('%d %b %Y') if user.created_at else 'N/A'
+          }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="details-section" style="margin-top: 30px">
+  <h3>User Details (Cards)</h3>
+  <div class="users-grid">
+    {% for user in users[:6] %}
+    <div class="user-card">
+      <div class="card-header">
+        <h4>{{ user.name }}</h4>
+        <span
+          class="badge {% if user.role == 'admin' %}badge-danger {% elif user.role == 'owner' %}badge-warning {% elif user.role == 'staff' %}badge-info {% else %}badge-secondary{% endif %}"
+        >
+          {{ user.role if user.role else 'customer' }}
+        </span>
+      </div>
+      <div class="card-body">
+        <p><strong>Phone:</strong> {{ user.phone or 'N/A' }}</p>
+        <p><strong>Email:</strong> {{ user.email or 'N/A' }}</p>
+        <p><strong>Shop:</strong> {{ user.shop_id or 'N/A' }}</p>
+        <p>
+          <strong>Status:</strong> {% if user.is_active %}<span
+            style="color: green"
+            >✓ Active</span
+          >{% else %}<span style="color: red">✗ Inactive</span>{% endif %}
+        </p>
+        <p>
+          <strong>Created:</strong> {{ user.created_at.strftime('%d %b %Y') if
+          user.created_at else 'N/A' }}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% else %}
+<div class="empty-state">
+  <p>No users found</p>
+  <a href="/" class="btn btn-secondary">Back to Home</a>
+</div>
+{% endif %} {% endblock %}

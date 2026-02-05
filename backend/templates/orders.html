@@ -1,0 +1,94 @@
+{% extends "base.html" %} {% block title %}SmartKirana - Orders{% endblock %} {%
+block content %}
+<div class="page-header">
+  <h1>Orders</h1>
+  <p class="subtitle">Total: <strong>{{ total }}</strong> orders</p>
+</div>
+
+{% if orders %}
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Shop ID</th>
+        <th>Status</th>
+        <th>Total Amount</th>
+        <th>Items</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td><code>{{ order.id }}</code></td>
+        <td>{{ order.user_id }}</td>
+        <td>{{ order.shop_id }}</td>
+        <td>
+          <span
+            class="badge {% if order.status == 'pending' %}badge-warning {% elif order.status == 'completed' %}badge-success {% elif order.status == 'cancelled' %}badge-danger {% else %}badge-info{% endif %}"
+          >
+            {{ order.status if order.status else 'unknown' }}
+          </span>
+        </td>
+        <td>
+          <strong
+            >{{ "%.2f"|format(order.total_amount if order.total_amount else 0)
+            }}</strong
+          >
+        </td>
+        <td>{{ order.line_items|length if order.line_items else 0 }}</td>
+        <td>
+          {{ order.created_at.strftime('%d %b %Y %H:%M') if order.created_at
+          else 'N/A' }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="details-section" style="margin-top: 30px">
+  <h3>Order Details (First 10)</h3>
+  <div class="orders-grid">
+    {% for order in orders[:10] %}
+    <div class="order-card">
+      <div class="card-header">
+        <h4>Order #{{ order.id }}</h4>
+        <span
+          class="badge {% if order.status == 'pending' %}badge-warning {% elif order.status == 'completed' %}badge-success {% elif order.status == 'cancelled' %}badge-danger {% else %}badge-info{% endif %}"
+        >
+          {{ order.status if order.status else 'unknown' }}
+        </span>
+      </div>
+      <div class="card-body">
+        <p><strong>Customer:</strong> User #{{ order.user_id }}</p>
+        <p><strong>Shop:</strong> Shop #{{ order.shop_id }}</p>
+        <p>
+          <strong>Total:</strong>
+          <span class="amount"
+            >{{ "%.2f"|format(order.total_amount if order.total_amount else 0)
+            }}</span
+          >
+        </p>
+        <p>
+          <strong>Items:</strong> {{ order.line_items|length if order.line_items
+          else 0 }}
+        </p>
+        <p>
+          <strong>Created:</strong> {{ order.created_at.strftime('%d %b %Y
+          %H:%M') if order.created_at else 'N/A' }}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% else %}
+<div class="empty-state">
+  <p>No orders found</p>
+  <a href="/" class="btn btn-secondary">Back to Home</a>
+</div>
+{% endif %} {% endblock %}

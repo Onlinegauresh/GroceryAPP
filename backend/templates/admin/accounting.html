@@ -1,0 +1,131 @@
+{% extends "admin/admin_base.html" %} {% block title %}Admin - Accounting{%
+endblock %} {% block page_title %}Sales & Accounting{% endblock %} {% block
+content %}
+<div class="page-title">Sales & Accounting</div>
+
+<!-- Date Range Filter -->
+<div class="card">
+  <div class="card-header">
+    <h3>Select Period</h3>
+  </div>
+  <div style="display: flex; gap: 10px; flex-wrap: wrap">
+    <button class="btn btn-secondary">Today</button>
+    <button class="btn btn-secondary">This Week</button>
+    <button class="btn btn-secondary">This Month</button>
+    <button class="btn btn-secondary">This Year</button>
+    <button class="btn btn-secondary">Custom Range</button>
+  </div>
+</div>
+
+<!-- Sales Summary -->
+<div class="card">
+  <div class="card-header">
+    <h3>Sales Summary</h3>
+  </div>
+  <div class="stats-grid" style="margin-bottom: 0">
+    <div class="stat-card">
+      <h3>${{ daily_sales | round(2) if daily_sales else '0.00' }}</h3>
+      <p>Today's Sales</p>
+    </div>
+    <div class="stat-card">
+      <h3>${{ weekly_sales | round(2) if weekly_sales else '0.00' }}</h3>
+      <p>This Week's Sales</p>
+    </div>
+    <div class="stat-card">
+      <h3>${{ monthly_sales | round(2) if monthly_sales else '0.00' }}</h3>
+      <p>This Month's Sales</p>
+    </div>
+    <div class="stat-card">
+      <h3>${{ yearly_sales | round(2) if yearly_sales else '0.00' }}</h3>
+      <p>This Year's Sales</p>
+    </div>
+  </div>
+</div>
+
+<!-- Orders by Status -->
+<div class="card">
+  <div class="card-header">
+    <h3>Orders by Status</h3>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Count</th>
+        <th>Total Revenue</th>
+        <th>Percentage</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% set total_orders = status_breakdown | length %} {% for status, data in
+      status_breakdown.items() %}
+      <tr>
+        <td>
+          <span class="status-badge status-{{ status.lower() }}">
+            {{ status.upper() }}
+          </span>
+        </td>
+        <td>{{ data.count }}</td>
+        <td>${{ data.total | round(2) }}</td>
+        <td>
+          {{ ((data.count / total_orders * 100) | round(1)) if total_orders > 0
+          else 0 }}%
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Top Products by Revenue -->
+<div class="card">
+  <div class="card-header">
+    <h3>Top Products by Revenue</h3>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Units Sold</th>
+        <th>Revenue</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if top_products %} {% for product in top_products[:10] %}
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.units_sold | default(0) }}</td>
+        <td>${{ product.revenue | default(0) | round(2) }}</td>
+      </tr>
+      {% endfor %} {% else %}
+      <tr>
+        <td colspan="3" style="text-align: center; color: #999">
+          No product data available
+        </td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Financial Metrics -->
+<div class="card">
+  <div class="card-header">
+    <h3>Financial Metrics</h3>
+  </div>
+  <div class="stats-grid" style="margin-bottom: 0">
+    <div class="stat-card">
+      <h3>{{ total_transactions | default(0) }}</h3>
+      <p>Total Transactions</p>
+    </div>
+    <div class="stat-card">
+      <h3>${{ avg_order_value | round(2) if avg_order_value else '0.00' }}</h3>
+      <p>Average Order Value</p>
+    </div>
+    <div class="stat-card">
+      <h3>{{ pending_payments | default(0) }}</h3>
+      <p>Pending Payments</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

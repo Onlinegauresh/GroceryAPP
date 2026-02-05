@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}SmartKirana - Products{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Products</h1>
+  <p class="subtitle">Total: <strong>{{ total }}</strong> products</p>
+</div>
+
+{% if products %}
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>SKU</th>
+        <th>Price</th>
+        <th>Unit</th>
+        <th>Created</th>
+        <th>Shop ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td><code>{{ product.id }}</code></td>
+        <td>{{ product.name }}</td>
+        <td><span class="badge">{{ product.category }}</span></td>
+        <td><code>{{ product.sku }}</code></td>
+        <td><strong>{{ "%.2f"|format(product.price) }}</strong></td>
+        <td>{{ product.unit }}</td>
+        <td>
+          {{ product.created_at.strftime('%d %b %Y %H:%M') if product.created_at
+          else 'N/A' }}
+        </td>
+        <td>{{ product.shop_id }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <p>No products found</p>
+  <a href="/" class="btn btn-secondary">Back to Home</a>
+</div>
+{% endif %} {% endblock %}

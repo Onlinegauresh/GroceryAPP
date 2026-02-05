@@ -1,0 +1,140 @@
+{% extends "shop/shop_base.html" %} {% block title %}Verify OTP - SmartKirana{%
+endblock %} {% block content %}
+<div class="auth-page">
+  <div class="auth-container login-container">
+    <div class="logo-area">
+      <h1>🔐 Verify OTP</h1>
+      <p class="subtitle">{{ message }}</p>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-error show">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/shop/verify-otp" class="auth-form">
+      <div class="form-group">
+        <label for="otp">🔐 Enter 6-Digit OTP</label>
+        <input
+          type="text"
+          id="otp"
+          name="otp"
+          placeholder="000000"
+          pattern="[0-9]{6}"
+          maxlength="6"
+          inputmode="numeric"
+          required
+          autofocus
+        />
+        <small>Check your SMS for the OTP. It expires in 5 minutes.</small>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem">
+        ✅ Verify OTP
+      </button>
+    </form>
+
+    <div
+      style="
+        text-align: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+      "
+    >
+      <p style="font-size: 0.875rem; color: #666">
+        Didn't receive OTP?
+        <a
+          href="/shop/forgot-password"
+          style="color: #27c44f; text-decoration: none; font-weight: 600"
+        >
+          Request New OTP
+        </a>
+      </p>
+    </div>
+
+    <div
+      style="
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f9f9f9;
+        border-radius: 0.375rem;
+        font-size: 0.8125rem;
+        color: #666;
+      "
+    >
+      <strong>💡 Tip:</strong> OTP is valid for 5 minutes only. After that,
+      request a new one.
+    </div>
+  </div>
+</div>
+
+<style>
+  .auth-form {
+    margin-top: 1.5rem;
+  }
+
+  .form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    color: #999;
+  }
+
+  .alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.375rem;
+    display: none;
+  }
+
+  .alert.show {
+    display: block;
+  }
+
+  .alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 0.75rem;
+    min-height: 3rem;
+    background: linear-gradient(135deg, #27c44f 0%, #1fa63a 100%);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 196, 79, 0.3);
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #27c44f 0%, #1fa63a 100%);
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    letter-spacing: 0.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  input:focus {
+    border-color: #27c44f;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(39, 196, 79, 0.1);
+  }
+</style>
+{% endblock %}

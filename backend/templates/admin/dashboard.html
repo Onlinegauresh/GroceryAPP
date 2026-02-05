@@ -1,0 +1,100 @@
+{% extends "admin/admin_base.html" %} {% block title %}Admin - Dashboard{%
+endblock %} {% block page_title %}Dashboard{% endblock %} {% block content %}
+<div class="page-title">Welcome to Admin Dashboard</div>
+
+<!-- Statistics Cards -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>{{ total_products }}</h3>
+    <p>Total Products</p>
+  </div>
+  <div class="stat-card">
+    <h3>{{ total_orders }}</h3>
+    <p>All Orders</p>
+  </div>
+  <div class="stat-card">
+    <h3>{{ today_orders_count }}</h3>
+    <p>Orders Today</p>
+  </div>
+  <div class="stat-card">
+    <h3>${{ today_sales | round(2) }}</h3>
+    <p>Today's Sales</p>
+  </div>
+  <div class="stat-card">
+    <h3>{{ total_shops }}</h3>
+    <p>Active Shops</p>
+  </div>
+  <div class="stat-card">
+    <h3>{{ low_stock_count }}</h3>
+    <p>Low Stock Items</p>
+  </div>
+</div>
+
+<!-- Low Stock Alert -->
+{% if low_stock_items %}
+<div class="card">
+  <div class="card-header">
+    <h3>⚠️ Low Stock Items</h3>
+  </div>
+  <div>
+    {% for product in low_stock_items %}
+    <div class="low-stock">
+      <strong>{{ product.name }}</strong> - Only {{ product.stock }} units
+      remaining
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Recent Orders -->
+<div class="card">
+  <div class="card-header">
+    <h3>Recent Orders</h3>
+    <a href="/admin/orders" class="btn btn-secondary">View All</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>User</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in recent_orders %}
+      <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.user_id }}</td>
+        <td>${{ order.total_amount | round(2) }}</td>
+        <td>
+          <span class="status-badge status-{{ order.status.lower() }}">
+            {{ order.status.upper() }}
+          </span>
+        </td>
+        <td>
+          {{ order.created_at.strftime('%m/%d/%Y %I:%M %p') if order.created_at
+          else 'N/A' }}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Quick Actions -->
+<div class="card">
+  <div class="card-header">
+    <h3>Quick Actions</h3>
+  </div>
+  <div style="display: flex; gap: 10px; flex-wrap: wrap">
+    <a href="/admin/products" class="btn btn-primary">Manage Products</a>
+    <a href="/admin/inventory" class="btn btn-primary">Check Inventory</a>
+    <a href="/admin/orders" class="btn btn-primary">View Orders</a>
+    <a href="/admin/accounting" class="btn btn-primary">View Sales</a>
+    <a href="/admin/ai" class="btn btn-primary">Get Insights</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Insights - SmartKirana AI Preview</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>SmartKirana AI</h1>
+      <p>Smart Grocery Retail Platform</p>
+    </header>
+
+    <nav>
+      <a href="/preview/" class="nav-link">Home</a>
+      <a href="/preview/products" class="nav-link">Products</a>
+      <a href="/preview/orders" class="nav-link">Orders</a>
+      <a href="/preview/accounting" class="nav-link">Accounting</a>
+      <a href="/preview/ai" class="nav-link active">AI Insights</a>
+    </nav>
+
+    <main>
+      <div class="container">
+        <h2>🤖 AI Insights</h2>
+
+        <div class="ai-sections">
+          <div class="ai-section">
+            <h3>📈 Demand Forecast (7-Day)</h3>
+            {% if forecast.forecasts %}
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Predicted Demand</th>
+                    <th>Confidence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in forecast.forecasts[:10] %}
+                  <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ "%.1f"|format(item.predicted_demand) }}</td>
+                    <td>{{ "%.1f"|format(item.confidence * 100) }}%</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <p>No forecast data available.</p>
+            {% endif %}
+          </div>
+
+          <div class="ai-section">
+            <h3>🔄 Reorder Suggestions</h3>
+            {% if reorders.suggestions %}
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Current Stock</th>
+                    <th>Suggested Order</th>
+                    <th>Urgency</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in reorders.suggestions[:10] %}
+                  <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.current_stock }}</td>
+                    <td>{{ "%.1f"|format(item.suggested_order_quantity) }}</td>
+                    <td>
+                      <span
+                        class="urgency {{ 'urgent' if item.is_urgent else 'normal' }}"
+                      >
+                        {{ 'URGENT' if item.is_urgent else 'Normal' }}
+                      </span>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <p>No reorder suggestions available.</p>
+            {% endif %}
+          </div>
+
+          <div class="ai-section">
+            <h3>⚠️ Low Stock Risks</h3>
+            {% if low_stock.risks %}
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Current Stock</th>
+                    <th>Days Left</th>
+                    <th>Risk Level</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in low_stock.risks[:10] %}
+                  <tr>
+                    <td>{{ item.product_name }}</td>
+                    <td>{{ item.current_stock }}</td>
+                    <td>{{ "%.1f"|format(item.days_until_minimum) }}</td>
+                    <td>
+                      <span class="risk {{ item.risk_level.lower() }}">
+                        {{ item.risk_level.title() }}
+                      </span>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <p>No low stock risks detected.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="summary">
+          <p>
+            <em
+              >Note: AI insights are based on sample data and algorithms for
+              preview purposes.</em
+            >
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 SmartKirana AI - Preview Mode</p>
+    </footer>
+  </body>
+</html>

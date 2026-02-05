@@ -1,0 +1,256 @@
+{% extends "shop/shop_base.html" %} {% block title %}Shop - Order Confirmation{%
+endblock %} {% block content %}
+<div
+  style="text-align: center; padding: 40px 0; max-width: 600px; margin: 0 auto"
+>
+  <!-- Success Message -->
+  <div
+    style="
+      background: #d4edda;
+      padding: 30px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border-left: 4px solid #27c44f;
+    "
+  >
+    <div style="font-size: 64px; margin-bottom: 20px">✅</div>
+    <h2 style="color: #155724; margin-bottom: 10px; font-size: 28px">
+      Order Confirmed!
+    </h2>
+    <p style="color: #155724; font-size: 16px">
+      Thank you for your purchase. Your order has been successfully placed.
+    </p>
+  </div>
+
+  <!-- Order Number -->
+  <div
+    style="
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    "
+  >
+    <p style="color: #999; margin-bottom: 5px">Order Number</p>
+    <h3
+      style="
+        color: #1a472a;
+        font-size: 32px;
+        margin-bottom: 20px;
+        font-family: monospace;
+      "
+    >
+      {{ order_id }}
+    </h3>
+
+    <div
+      style="
+        text-align: left;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      "
+    >
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">
+          ORDER DATE
+        </p>
+        <p style="color: #1a472a; font-weight: bold">
+          {{ order.created_at.strftime('%B %d, %Y') if order.created_at else
+          'Today' }}
+        </p>
+      </div>
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">
+          ORDER TOTAL
+        </p>
+        <p style="color: #27c44f; font-weight: bold; font-size: 18px">
+          ${{ total_amount | round(2) }}
+        </p>
+      </div>
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">
+          DELIVERY STATUS
+        </p>
+        <p style="color: #ff9800; font-weight: bold">
+          <span
+            class="status-badge"
+            style="
+              background-color: #fff3cd;
+              color: #856404;
+              padding: 4px 12px;
+              border-radius: 12px;
+            "
+          >
+            PROCESSING
+          </span>
+        </p>
+      </div>
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">PAYMENT</p>
+        <p style="color: #999; font-weight: bold">Pending</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- What Happens Next -->
+  <div
+    style="
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      text-align: left;
+    "
+  >
+    <h3 style="color: #1a472a; margin-bottom: 20px">What Happens Next?</h3>
+
+    <div style="display: flex; gap: 15px; margin-bottom: 20px">
+      <div style="font-size: 24px">📦</div>
+      <div>
+        <h4 style="color: #1a472a; margin-bottom: 5px">
+          Order Confirmation Email
+        </h4>
+        <p style="color: #666; font-size: 14px">
+          You'll receive a confirmation email shortly with your order details
+          and tracking information.
+        </p>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 15px; margin-bottom: 20px">
+      <div style="font-size: 24px">✅</div>
+      <div>
+        <h4 style="color: #1a472a; margin-bottom: 5px">Order Processing</h4>
+        <p style="color: #666; font-size: 14px">
+          Your order will be processed and prepared for shipment within 24
+          hours.
+        </p>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 15px; margin-bottom: 20px">
+      <div style="font-size: 24px">🚚</div>
+      <div>
+        <h4 style="color: #1a472a; margin-bottom: 5px">Shipping</h4>
+        <p style="color: #666; font-size: 14px">
+          Your items will be shipped via standard delivery (3-5 business days).
+        </p>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 15px">
+      <div style="font-size: 24px">📍</div>
+      <div>
+        <h4 style="color: #1a472a; margin-bottom: 5px">Track Your Order</h4>
+        <p style="color: #666; font-size: 14px">
+          You can track your order status in your account dashboard at any time.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Details -->
+  <div
+    style="
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    "
+  >
+    <h3 style="color: #1a472a; margin-bottom: 20px">Order Details</h3>
+
+    <div style="text-align: left">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 15px;
+          padding-bottom: 15px;
+          border-bottom: 1px solid #eee;
+        "
+      >
+        <span style="color: #666">Subtotal:</span>
+        <span>${{ total_amount | round(2) }}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 15px;
+          padding-bottom: 15px;
+          border-bottom: 1px solid #eee;
+        "
+      >
+        <span style="color: #666">Shipping:</span>
+        <span>FREE</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 15px;
+          padding-bottom: 15px;
+          border-bottom: 1px solid #eee;
+        "
+      >
+        <span style="color: #666">Tax (10%):</span>
+        <span>${{ (total_amount * 0.1) | round(2) }}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          font-size: 18px;
+          font-weight: bold;
+          color: #1a472a;
+        "
+      >
+        <span>Total:</span>
+        <span style="color: #27c44f"
+          >${{ (total_amount + (total_amount * 0.1)) | round(2) }}</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Buttons -->
+  <div
+    style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center"
+  >
+    <a
+      href="/shop/orders"
+      class="btn btn-primary"
+      style="flex: 1; min-width: 150px"
+      >View My Orders</a
+    >
+    <a
+      href="/shop/products"
+      class="btn btn-secondary"
+      style="flex: 1; min-width: 150px"
+      >Continue Shopping</a
+    >
+  </div>
+
+  <!-- Help -->
+  <div
+    style="
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid #eee;
+      color: #999;
+      font-size: 14px;
+    "
+  >
+    <p>Need help with your order?</p>
+    <p style="margin-top: 5px">
+      Contact us at <strong>support@groceryshop.com</strong> or call
+      <strong>1-800-GROCERY</strong>
+    </p>
+  </div>
+</div>
+{% endblock %}

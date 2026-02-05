@@ -1,0 +1,175 @@
+{% extends "shop/shop_base.html" %} {% block title %}Shop - My Orders{% endblock
+%} {% block content %}
+<h2 class="page-title">My Orders</h2>
+
+{% if orders %}
+<div
+  style="
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  "
+>
+  <p style="color: #666">
+    You have <strong>{{ total_orders }}</strong> order(s)
+  </p>
+  <div style="display: flex; gap: 10px">
+    <select style="padding: 8px; border: 1px solid #ddd; border-radius: 4px">
+      <option>Filter by Status</option>
+      <option>All Orders</option>
+      <option>Pending</option>
+      <option>Processing</option>
+      <option>Shipped</option>
+      <option>Delivered</option>
+    </select>
+  </div>
+</div>
+
+<!-- Orders List -->
+<div style="display: grid; gap: 20px">
+  {% for order in orders %}
+  <div
+    class="card"
+    style="
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-left: 4px solid #27c44f;
+    "
+  >
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+      "
+    >
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">ORDER ID</p>
+        <p
+          style="
+            color: #1a472a;
+            font-weight: bold;
+            font-size: 16px;
+            font-family: monospace;
+          "
+        >
+          #{{ order.id }}
+        </p>
+      </div>
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">DATE</p>
+        <p style="color: #1a472a; font-weight: bold">
+          {{ order.created_at.strftime('%b %d, %Y') if order.created_at else
+          'N/A' }}
+        </p>
+      </div>
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">TOTAL</p>
+        <p style="color: #27c44f; font-weight: bold; font-size: 18px">
+          ${{ order.total_amount | round(2) }}
+        </p>
+      </div>
+      <div>
+        <p style="color: #999; font-size: 12px; margin-bottom: 5px">STATUS</p>
+        <p>
+          <span
+            class="status-badge"
+            style="padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 12px;
+                        {% if (order.order_status or 'placed')|lower == 'delivered' %}
+                            background-color: #d4edda; color: #155724;
+                        {% elif (order.order_status or 'placed')|lower == 'out_for_delivery' %}
+                            background-color: #d1ecf1; color: #0c5460;
+                        {% else %}
+                            background-color: #fff3cd; color: #856404;
+                        {% endif %}
+                    "
+          >
+            {{ (order.order_status or 'placed')|upper }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Order Items (Optional - can be expanded) -->
+    <div
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      <div>
+        <p style="color: #666; font-size: 13px">
+          Payment Status: {% if order.payment_status %}
+          <strong>{{ order.payment_status.upper() }}</strong>
+          {% else %}
+          <strong>PENDING</strong>
+          {% endif %}
+        </p>
+      </div>
+      <div style="display: flex; gap: 10px">
+        <a
+          href="#"
+          class="btn btn-secondary"
+          style="padding: 8px 15px; font-size: 12px"
+          >View Details</a
+        >
+        <a
+          href="#"
+          class="btn btn-outline"
+          style="padding: 8px 15px; font-size: 12px"
+          >Download Invoice</a
+        >
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<!-- Empty Orders State -->
+<div
+  style="
+    background: white;
+    padding: 60px 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  "
+>
+  <div style="font-size: 64px; margin-bottom: 20px">🛍️</div>
+  <h3 style="color: #1a472a; font-size: 24px; margin-bottom: 10px">
+    No Orders Yet
+  </h3>
+  <p style="color: #666; margin-bottom: 30px">
+    You haven't placed any orders yet. Start shopping and explore our products!
+  </p>
+  <a href="/shop/products" class="btn btn-primary" style="display: inline-block"
+    >Start Shopping</a
+  >
+</div>
+{% endif %}
+
+<!-- Return Policy Info -->
+<div
+  style="
+    background: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 40px;
+    border-left: 4px solid #27c44f;
+  "
+>
+  <h3 style="color: #1a472a; margin-bottom: 15px">📋 Return & Refund Policy</h3>
+  <p style="color: #666; line-height: 1.6; margin-bottom: 10px">
+    We want you to be completely satisfied with your purchase. If you're not
+    happy with your order, you can return most items within 30 days for a full
+    refund.
+  </p>
+  <a href="#" style="color: #27c44f; text-decoration: none; font-weight: bold"
+    >Read our full return policy →</a
+  >
+</div>
+{% endblock %}

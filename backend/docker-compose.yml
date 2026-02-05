@@ -1,0 +1,73 @@
+version: "3.9"
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: smartkirana_db
+    environment:
+      POSTGRES_USER: smartkirana
+      POSTGRES_PASSWORD: smartkirana123
+      POSTGRES_DB: smartkirana
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartkirana"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - smartkirana_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: smartkirana_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - smartkirana_network
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartkirana_backend
+    environment:
+      DATABASE_URL: postgresql://smartkirana:smartkirana123@postgres:5432/smartkirana
+      REDIS_URL: redis://redis:6379
+      SECRET_KEY: ${SECRET_KEY:-change-this-in-production-12345}
+      DEBUG: ${DEBUG:-false}
+      API_TITLE: SmartKirana AI Backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - smartkirana_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  smartkirana_network:
+    driver: bridge

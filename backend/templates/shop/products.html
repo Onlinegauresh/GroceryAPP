@@ -1,0 +1,241 @@
+{% extends "shop/shop_base.html" %} {% block title %}Shop - Products{% endblock
+%} {% block content %}
+<div style="display: grid; grid-template-columns: 200px 1fr; gap: 20px">
+  <!-- Sidebar Filters -->
+  <aside
+    style="
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      height: fit-content;
+      position: sticky;
+      top: 200px;
+    "
+  >
+    <h3
+      style="
+        color: #1a472a;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #27c44f;
+      "
+    >
+      Filter by Category
+    </h3>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <a
+        href="/shop/products"
+        class="{% if not selected_category %}active-filter{% endif %}"
+        style="
+                padding: 10px 15px;
+                border-radius: 4px;
+                text-decoration: none;
+                color: #1a472a;
+                transition: all 0.3s ease;
+                {% if not selected_category %}background-color: #27c44f; color: white;{% else %}background-color: #f5f5f5;{% endif %}
+            "
+      >
+        All Products
+      </a>
+
+      {% for category in categories %}
+      <a
+        href="/shop/products?category={{ category }}"
+        class="{% if category == selected_category %}active-filter{% endif %}"
+        style="
+                padding: 10px 15px;
+                border-radius: 4px;
+                text-decoration: none;
+                color: #1a472a;
+                transition: all 0.3s ease;
+                {% if category == selected_category %}background-color: #27c44f; color: white;{% else %}background-color: #f5f5f5;{% endif %}
+            "
+      >
+        {{ category | title }}
+      </a>
+      {% endfor %}
+    </div>
+
+    <div
+      style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee"
+    >
+      <h4 style="color: #1a472a; margin-bottom: 15px">Filter Options</h4>
+      <label
+        style="
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 10px;
+          cursor: pointer;
+        "
+      >
+        <input type="checkbox" /> In Stock Only
+      </label>
+      <label
+        style="
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 10px;
+          cursor: pointer;
+        "
+      >
+        <input type="checkbox" /> On Sale
+      </label>
+      <label
+        style="
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 10px;
+          cursor: pointer;
+        "
+      >
+        <input type="checkbox" /> Best Sellers
+      </label>
+    </div>
+
+    <div
+      style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee"
+    >
+      <h4 style="color: #1a472a; margin-bottom: 15px">Sort By</h4>
+      <select
+        style="
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          color: #1a472a;
+        "
+      >
+        <option>Price: Low to High</option>
+        <option>Price: High to Low</option>
+        <option>Best Sellers</option>
+        <option>Newest</option>
+        <option>A-Z</option>
+      </select>
+    </div>
+  </aside>
+
+  <!-- Main Products -->
+  <main>
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      "
+    >
+      <div>
+        <h2 class="page-title" style="margin-bottom: 5px">
+          {% if selected_category %} {{ selected_category | title }} {% else %}
+          All Products {% endif %}
+        </h2>
+        <p style="color: #666">{{ products | length }} products found</p>
+      </div>
+    </div>
+
+    {% if products %}
+    <div class="products-grid">
+      {% for product in products %}
+      <div class="product-card">
+        <div class="product-image">🥕</div>
+        <div class="product-info">
+          <div class="product-name">{{ product.name }}</div>
+          <div class="product-category">
+            {{ product.category if product.category else 'Groceries' }}
+          </div>
+
+          {% if product.description %}
+          <div style="font-size: 12px; color: #666; margin-bottom: 10px">
+            {{ product.description[:50] }}...
+          </div>
+          {% endif %}
+
+          <div class="product-price">
+            ${{ product.selling_price | round(2) }}
+          </div>
+
+          <div
+            class="product-stock {% if product.current_stock < 5 %}low{% endif %}"
+          >
+            {% if product.current_stock == 0 %} Out of Stock {% elif
+            product.current_stock < 5 %} Only {{ product.current_stock }} left!
+            {% else %} In Stock {% endif %}
+          </div>
+
+          <div style="margin-top: 10px">
+            <form
+              action="/shop/cart/add/{{ product.id }}"
+              method="post"
+              style="margin: 0"
+            >
+              <input type="hidden" name="quantity" value="1" />
+              <div style="display: flex; gap: 8px; align-items: center">
+                <select
+                  name="quantity"
+                  style="
+                    padding: 6px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    flex: 1;
+                  "
+                >
+                  <option value="1">Qty: 1</option>
+                  <option value="2">Qty: 2</option>
+                  <option value="3">Qty: 3</option>
+                  <option value="5">Qty: 5</option>
+                  <option value="10">Qty: 10</option>
+                </select>
+                {% if product.current_stock > 0 %}
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  style="flex: 2; padding: 6px"
+                >
+                  Add
+                </button>
+                {% else %}
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  style="flex: 2; padding: 6px; opacity: 0.6"
+                  disabled
+                >
+                  Out of Stock
+                </button>
+                {% endif %}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div
+      style="
+        background: white;
+        padding: 60px 30px;
+        border-radius: 8px;
+        text-align: center;
+      "
+    >
+      <h3 style="color: #999; font-size: 20px">No products found</h3>
+      <p style="color: #999; margin-top: 10px">
+        Try adjusting your filters or search criteria
+      </p>
+      <a
+        href="/shop/products"
+        class="btn btn-primary"
+        style="display: inline-block; margin-top: 20px"
+        >View All Products</a
+      >
+    </div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}

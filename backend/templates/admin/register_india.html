@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>दुकानदार पंजीकरण - SmartKirana | Shopkeeper Registration</title>
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #1a472a 0%, #0d2817 100%);
+      }
+
+      .auth-page {
+        padding: 1.25rem 1rem;
+      }
+
+      .register-container {
+        max-width: 33.75rem;
+        padding: 2.5rem;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .logo-area {
+        margin-bottom: 1.875rem;
+        border-bottom: 2px solid #1a472a;
+        padding-bottom: 1.25rem;
+      }
+
+      .logo-area h1 {
+        color: #1a472a;
+        font-size: 2rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .logo-area .badge {
+        display: inline-block;
+        background: linear-gradient(
+          90deg,
+          #ff9933 0%,
+          #ffffff 33%,
+          #138808 100%
+        );
+        color: #333;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        margin-top: 8px;
+        border: 2px solid #333;
+      }
+
+      .logo-area p {
+        color: #666;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .hint {
+        color: #999;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      input[type="password"],
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s;
+        font-family: inherit;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #1a472a;
+        box-shadow: 0 0 0 3px rgba(26, 71, 42, 0.1);
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+      }
+
+      .error-message,
+      .error-list {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        border: 1px solid #f5c6cb;
+      }
+
+      .error-list ul {
+        list-style-position: inside;
+        margin: 0;
+      }
+
+      .error-list li {
+        margin-bottom: 8px;
+      }
+
+      .warning-box {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        border: 1px solid #ffeeba;
+      }
+
+      .info-box {
+        background-color: #e7f3ff;
+        color: #004085;
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        border-left: 4px solid #0066cc;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+
+      .row .form-group {
+        margin-bottom: 0;
+      }
+
+      .btn-register {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #1a472a 0%, #0d2817 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+      }
+
+      .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(26, 71, 42, 0.3);
+      }
+
+      .divider {
+        text-align: center;
+        margin: 25px 0;
+        color: #999;
+        font-size: 14px;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .login-link a {
+        color: #1a472a;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .login-link a:hover {
+        color: #e74c3c;
+        text-decoration: underline;
+      }
+
+      .back-link {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      .back-link a {
+        color: #999;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+
+      .back-link a:hover {
+        color: #1a472a;
+      }
+
+      .required {
+        color: #e74c3c;
+      }
+
+      @media (max-width: 480px) {
+        .register-container {
+          padding: 30px 20px;
+        }
+
+        .logo-area h1 {
+          font-size: 28px;
+        }
+
+        .row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-container">
+      <div class="logo-area">
+        <h1>🛡️ SmartKirana</h1>
+        <div class="badge">🇮🇳 दुकानदार पंजीकरण | Shopkeeper Registration</div>
+        <p>केवल भारतीय दुकानदारों के लिए | For Indian Shopkeepers Only</p>
+      </div>
+
+      <div class="info-box">
+        📋 कृपया अपनी GST और PAN जानकारी सही तरीके से भरें | Please provide your
+        GST & PAN details correctly
+      </div>
+
+      <div class="warning-box">
+        ⚠️ दुकानदार कोड आवश्यक है | Admin registration requires authorization
+        code. Default: <strong>ADMIN123</strong>
+      </div>
+
+      {% if error %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %} {% if errors %}
+      <div class="error-list">
+        <ul>
+          {% for err in errors %}
+          <li>{{ err }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <form method="POST" action="/admin/register">
+        <!-- PERSONAL DETAILS SECTION -->
+        <div
+          style="
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+          "
+        >
+          <h3 style="color: #1a472a; font-size: 16px; margin-bottom: 15px">
+            👤 व्यक्तिगत विवरण / Personal Details
+          </h3>
+
+          <div class="form-group">
+            <label for="name"
+              >दुकानदार का नाम <span class="required">*</span> / Shopkeeper
+              Name</label
+            >
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="पूरा नाम / Full Name"
+              required
+              autocomplete="name"
+            />
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="phone"
+                >भारतीय मोबाइल <span class="required">*</span> / Indian
+                Mobile</label
+              >
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="10 अंक / 10 digits"
+                pattern="[6-9][0-9]{9}"
+                required
+                autocomplete="tel"
+                title="10-digit Indian mobile number required"
+              />
+              <div class="hint">6-9 से शुरू / Must start with 6-9</div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">ईमेल / Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="name@example.com"
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="state"
+              >राज्य <span class="required">*</span> / State</label
+            >
+            <select id="state" name="state" required>
+              <option value="">-- राज्य चुनें / Select State --</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+              <option value="Assam">Assam</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Goa">Goa</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Jharkhand">Jharkhand</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Manipur">Manipur</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Mizoram">Mizoram</option>
+              <option value="Nagaland">Nagaland</option>
+              <option value="Odisha">Odisha</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Sikkim">Sikkim</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Tripura">Tripura</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Uttarakhand">Uttarakhand</option>
+              <option value="West Bengal">West Bengal</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="city"
+                >शहर <span class="required">*</span> / City</label
+              >
+              <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="शहर का नाम / City Name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="pincode"
+                >पिनकोड <span class="required">*</span> / Pincode</label
+              >
+              <input
+                type="text"
+                id="pincode"
+                name="pincode"
+                placeholder="6 अंक / 6 digits"
+                pattern="[0-9]{6}"
+                required
+                title="Valid 6-digit Indian pincode"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- GST & TAX DETAILS SECTION -->
+        <div
+          style="
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+          "
+        >
+          <h3 style="color: #1a472a; font-size: 16px; margin-bottom: 15px">
+            💼 कर विवरण / Tax Details
+          </h3>
+
+          <div class="form-group">
+            <label for="gst"
+              >GST नंबर <span class="required">*</span> / GST Number</label
+            >
+            <input
+              type="text"
+              id="gst"
+              name="gst"
+              placeholder="15 अंकों का GST / 15-digit GST (e.g., 07AADCT1234H1Z0)"
+              pattern="[0-9A-Z]{15}"
+              required
+              autocomplete="off"
+              title="Valid 15-character GST number required"
+              style="text-transform: uppercase"
+            />
+            <div class="hint">
+              ऊपरी अक्षर / Uppercase format | Format:
+              2-StateCode-5Digits-1Letter-1Digit-1Letter-1Digit
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="pan">PAN <span class="required">*</span> / PAN</label>
+              <input
+                type="text"
+                id="pan"
+                name="pan"
+                placeholder="10 अंकों का PAN / 10-char PAN"
+                pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
+                required
+                autocomplete="off"
+                title="Valid 10-character PAN required"
+                style="text-transform: uppercase"
+              />
+              <div class="hint">Format: AAAAA0000A</div>
+            </div>
+
+            <div class="form-group">
+              <label for="shop_name"
+                >दुकान का नाम <span class="required">*</span> / Shop Name</label
+              >
+              <input
+                type="text"
+                id="shop_name"
+                name="shop_name"
+                placeholder="दुकान का नाम / Your Shop Name"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address">दुकान का पता / Shop Address</label>
+            <textarea
+              id="address"
+              name="address"
+              placeholder="पूरा पता / Complete Address"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- SECURITY DETAILS SECTION -->
+        <div
+          style="
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+          "
+        >
+          <h3 style="color: #1a472a; font-size: 16px; margin-bottom: 15px">
+            🔐 सुरक्षा / Security
+          </h3>
+
+          <div class="form-group">
+            <label for="password"
+              >पासवर्ड <span class="required">*</span> / Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="कम से कम 6 अक्षर / Min 6 characters"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="confirm_password"
+              >पासवर्ड की पुष्टि <span class="required">*</span> / Confirm
+              Password</label
+            >
+            <input
+              type="password"
+              id="confirm_password"
+              name="confirm_password"
+              placeholder="पासवर्ड दोहराएं / Confirm Password"
+              required
+              autocomplete="new-password"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="admin_code"
+              >अधिकृत कोड <span class="required">*</span> / Authorization
+              Code</label
+            >
+            <input
+              type="password"
+              id="admin_code"
+              name="admin_code"
+              placeholder="अधिकृत कोड / Authorization Code"
+              required
+              autocomplete="off"
+            />
+            <div class="hint">
+              💡 SmartKirana टीम से प्राप्त करें | Contact SmartKirana Team
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-register">
+          ✅ दुकानदार खाता बनाएं / Create Shopkeeper Account
+        </button>
+      </form>
+
+      <div class="divider">पहले से खाता है? / Already registered?</div>
+
+      <div class="login-link">
+        <a href="/admin/login">लॉगिन करें / Login Here →</a>
+      </div>
+
+      <div class="back-link">
+        <a href="/shop/">← ग्राहक के रूप में लॉगिन / Back to Customer Shop</a>
+      </div>
+    </div>
+  </body>
+</html>

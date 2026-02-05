@@ -1,0 +1,76 @@
+{% extends "base.html" %} {% block title %}SmartKirana - Home{% endblock %} {%
+block content %}
+<div class="hero">
+  <h1>Welcome to SmartKirana</h1>
+  <p>
+    A complete open-source grocery retail platform with offline-first
+    architecture
+  </p>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-icon">📦</div>
+    <h3>Products</h3>
+    <p>Browse all products in the inventory</p>
+    <a href="/preview/products" class="btn btn-primary">View Products</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">📋</div>
+    <h3>Orders</h3>
+    <p>See all orders and their status</p>
+    <a href="/preview/orders" class="btn btn-primary">View Orders</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🏪</div>
+    <h3>Shops</h3>
+    <p>Manage multiple retail shops</p>
+    <a href="/preview/shops" class="btn btn-primary">View Shops</a>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">👥</div>
+    <h3>Users</h3>
+    <p>View all registered users and roles</p>
+    <a href="/preview/users" class="btn btn-primary">View Users</a>
+  </div>
+</div>
+
+<div class="info-section">
+  <h2>System Status</h2>
+  <div class="stats">
+    <div class="stat">
+      <strong>Framework</strong>
+      <span>FastAPI 0.104.1</span>
+    </div>
+    <div class="stat">
+      <strong>Database</strong>
+      <span>PostgreSQL</span>
+    </div>
+    <div class="stat">
+      <strong>Authentication</strong>
+      <span>JWT + RBAC</span>
+    </div>
+    <div class="stat">
+      <strong>API Docs</strong>
+      <span><a href="/api/docs" target="_blank">Swagger UI</a></span>
+    </div>
+  </div>
+</div>
+
+<div class="info-section">
+  <h2>Features</h2>
+  <ul class="features">
+    <li>✓ Multi-tenancy (multiple shops)</li>
+    <li>✓ Role-based access control (RBAC)</li>
+    <li>✓ Product inventory management</li>
+    <li>✓ Order lifecycle tracking</li>
+    <li>✓ Double-entry accounting</li>
+    <li>✓ AI-powered insights</li>
+    <li>✓ Offline-first ready</li>
+    <li>✓ Full audit trail</li>
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Grocery Shop{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/common.css" />
+    <link rel="stylesheet" href="/static/css/shop.css" />
+    <style>
+      :root {
+        --primary: #27c44f;
+        --primary-dark: #1fa63a;
+      }
+
+      /* SHOP SPECIFIC HEADER */
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--primary-dark) 100%
+        );
+      }
+
+      .logo {
+        color: white;
+      }
+
+      .header-right {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      /* RESPONSIVE FIXES */
+      @media (max-width: 480px) {
+        .header-top {
+          padding: 0.75rem;
+        }
+
+        .search-bar {
+          flex: 1;
+          width: 100%;
+        }
+
+        .header-nav ul {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        .header-nav a {
+          padding: 0.75rem 1rem;
+          font-size: 0.8125rem;
+        }
+      }
+
+      @media (min-width: 30.0625rem) and (max-width: 56.3125rem) {
+        .header-top {
+          gap: 1rem;
+        }
+
+        .search-bar {
+          max-width: 300px;
+        }
+
+        .header-nav a {
+          padding: 0.75rem 1rem;
+          font-size: 0.9375rem;
+        }
+      }
+
+      @media (min-width: 56.3125rem) {
+        .header-top {
+          padding: 1.5rem 2rem;
+        }
+
+        .search-bar {
+          max-width: 400px;
+        }
+      }
+    </style>
+    {% block extra_styles %}{% endblock %}
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-top">
+        <a href="/shop" class="logo">
+          <span>🛒</span>
+          Grocery Shop
+        </a>
+        <div class="header-right">
+          <div class="search-bar">
+            <input type="text" placeholder="Search products..." />
+            <button>Search</button>
+          </div>
+          <a href="/shop/cart" class="cart-button">
+            🛒 Cart {% if cart_count > 0 %}
+            <span class="cart-count">{{ cart_count }}</span>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <ul>
+          <li>
+            <a
+              href="/shop"
+              class="{% if request.url.path == '/shop' %}active{% endif %}"
+              >Home</a
+            >
+          </li>
+          <li>
+            <a
+              href="/shop/products"
+              class="{% if '/products' in request.url.path %}active{% endif %}"
+              >Shop All</a
+            >
+          </li>
+          <li>
+            <a
+              href="/shop/orders"
+              class="{% if '/orders' in request.url.path %}active{% endif %}"
+              >My Orders</a
+            >
+          </li>
+          <li><a href="/admin">Admin Panel</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      {% if message %}
+      <div class="alert alert-success show">{{ message }}</div>
+      {% endif %} {% if error %}
+      <div class="alert alert-error show">{{ error }}</div>
+      {% endif %} {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About Us</h3>
+          <ul>
+            <li><a href="#">About Our Store</a></li>
+            <li><a href="#">Our Mission</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Customer Service</h3>
+          <ul>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Policies</h3>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Refund Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Grocery Shop. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Auto-dismiss alerts after 5 seconds
+      const alerts = document.querySelectorAll(".alert.show");
+      alerts.forEach((alert) => {
+        setTimeout(() => {
+          alert.style.display = "none";
+        }, 5000);
+      });
+    </script>
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

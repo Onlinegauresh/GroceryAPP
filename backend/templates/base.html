@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}SmartKirana Preview{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <h1 class="logo">SmartKirana</h1>
+          <span class="tagline">Backend Preview</span>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/preview/products" class="nav-link">Products</a></li>
+          <li><a href="/preview/orders" class="nav-link">Orders</a></li>
+          <li><a href="/preview/shops" class="nav-link">Shops</a></li>
+          <li><a href="/preview/users" class="nav-link">Users</a></li>
+          <li><a href="/api/docs" class="nav-link api-link">Swagger API</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container main-content">{% block content %}{% endblock %}</div>
+
+    <footer class="footer">
+      <p>&copy; 2026 SmartKirana. FastAPI + Jinja2 Preview. Read-Only View.</p>
+    </footer>
+  </body>
+</html>

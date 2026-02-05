@@ -1,0 +1,79 @@
+{% extends "admin/admin_base.html" %} {% block title %}Admin - Orders{% endblock
+%} {% block page_title %}Orders Management{% endblock %} {% block content %}
+<div class="page-title">Orders Management</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>All Orders</h3>
+  </div>
+
+  {% if orders %}
+  <table>
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Shop</th>
+        <th>Total Amount</th>
+        <th>Status</th>
+        <th>Payment</th>
+        <th>Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.customer_name or 'Guest' }}</td>
+        <td>{{ order.shop_id }}</td>
+        <td>${{ "%.2f"|format(order.total_amount or 0) }}</td>
+        <td>
+          <span class="status-badge">
+            {{ (order.order_status or 'placed')|upper }}
+          </span>
+        </td>
+        <td>
+          <span class="status-badge">
+            {{ (order.payment_status or 'pending')|upper }}
+          </span>
+        </td>
+        <td>
+          {{ order.order_date.strftime('%m/%d/%Y %I:%M %p') if order.order_date
+          else 'N/A' }}
+        </td>
+        <td>
+          <div class="action-buttons">
+            <a href="#" class="btn btn-secondary">View</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p style="padding: 20px; text-align: center; color: #999">No orders found</p>
+  {% endif %}
+</div>
+
+<!-- Summary -->
+<div class="card">
+  <div class="card-header">
+    <h3>Orders Summary</h3>
+  </div>
+  <div class="stats-grid" style="margin-bottom: 0">
+    <div class="stat-card">
+      <h3>{{ orders | length }}</h3>
+      <p>Total Orders</p>
+    </div>
+    <div class="stat-card">
+      <h3>${{ total_value | round(2) if total_value else '0.00' }}</h3>
+      <p>Total Revenue</p>
+    </div>
+    <div class="stat-card">
+      <h3 style="color: #ff9800">{{ pending_count | default(0) }}</h3>
+      <p>Pending Orders</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

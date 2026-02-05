@@ -1,0 +1,89 @@
+"""Business logic for authentication"""
+from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
+from uuid import UUID
+
+from shared.models import User, RoleEnum
+from app.auth.schemas import UserCreate, UserResponse
+from app.auth.security import hash_password, verify_password
+
+
+class AuthService:
+    """Service for authentication operations"""
+
+    @staticmethod
+    def create_user(db: Session, user_create: UserCreate) -> User:
+        """Create a new user"""
+        # Check if user already exists
+        existing_email = db.query(User).filter(
+            User.email == user_create.email).first()
+        if existing_email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered"
+            )
+
+        existing_phone = db.query(User).filter(
+            User.phone == user_create.phone).first()
+        if existing_phone:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Phone number already registered"
+            )
+
+        # Create user with shop_id=1 (default admin shop)
+        password_hash = hash_password(user_create.password)
+        db_user = User(
+            name=user_create.name,
+            email=user_create.email,
+            phone=user_create.phone,
+            password_hash=password_hash,
+            role=RoleEnum(user_create.role),
+            shop_id=1  # Default to shop 1
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+
+        return db_user
+
+    @staticmethod
+    def authenticate_user(db: Session, email: str, password: str) -> User:
+        """Authenticate user by email and password"""
+        user = db.query(User).filter(User.email == email).first()
+
+        if not user or not verify_password(password, user.password_hash):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+
+        if not user.is_active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="User account is inactive"
+            )
+
+        return user
+
+    @staticmethod
+    def get_user_by_id(db: Session, user_id: UUID) -> User:
+        """Get user by ID"""
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        return user
+
+    @staticmethod
+    def get_user_by_email(db: Session, email: str) -> User:
+        """Get user by email"""
+        user = db.query(User).filter(User.email == email).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        return user

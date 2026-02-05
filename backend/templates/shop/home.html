@@ -1,0 +1,148 @@
+{% extends "shop/shop_base.html" %} {% block title %}Shop - Home{% endblock %}
+{% block content %}
+<!-- Hero Section -->
+<div
+  style="
+    background: linear-gradient(135deg, #27c44f 0%, #1fa63a 100%);
+    color: white;
+    padding: 60px 30px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    text-align: center;
+  "
+>
+  <h1 style="font-size: 36px; margin-bottom: 15px">
+    Welcome to Our Online Grocery Store
+  </h1>
+  <p style="font-size: 18px; margin-bottom: 20px">
+    Find fresh groceries and everyday essentials at great prices
+  </p>
+  <a href="/shop/products" class="btn btn-primary" style="display: inline-block"
+    >Start Shopping</a
+  >
+</div>
+
+<!-- Featured Products Section -->
+<div style="margin-bottom: 40px">
+  <h2 class="page-title">Featured Products</h2>
+
+  {% if products %}
+  <div class="products-grid">
+    {% for product in products %}
+    <div class="product-card">
+      <div class="product-image">🥕</div>
+      <div class="product-info">
+        <div class="product-name">{{ product.name }}</div>
+        <div class="product-category">
+          {{ product.category if product.category else 'Groceries' }}
+        </div>
+        <div class="product-price">${{ product.selling_price | round(2) }}</div>
+        <div
+          class="product-stock {% if product.current_stock < 5 %}low{% endif %}"
+        >
+          {% if product.current_stock == 0 %} Out of Stock {% elif
+          product.current_stock < 5 %} Only {{ product.current_stock }} left! {%
+          else %} In Stock ({{ product.current_stock }} available) {% endif %}
+        </div>
+        <form
+          action="/shop/cart/add/{{ product.id }}"
+          method="post"
+          style="margin: 0"
+        >
+          <input type="hidden" name="quantity" value="1" />
+          {% if product.current_stock > 0 %}
+          <button type="submit" class="btn btn-primary" style="width: 100%">
+            Add to Cart
+          </button>
+          {% else %}
+          <button
+            type="button"
+            class="btn btn-secondary"
+            style="width: 100%; opacity: 0.6"
+            disabled
+          >
+            Out of Stock
+          </button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p style="text-align: center; color: #999; padding: 40px">
+    No products available at the moment
+  </p>
+  {% endif %}
+</div>
+
+<!-- Why Shop With Us -->
+<div
+  style="
+    background: white;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  "
+>
+  <h2 class="page-title">Why Shop With Us?</h2>
+  <div
+    style="
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    "
+  >
+    <div style="text-align: center">
+      <div style="font-size: 48px; margin-bottom: 15px">🚚</div>
+      <h3 style="color: #1a472a; margin-bottom: 10px">Fast Delivery</h3>
+      <p style="color: #666">Quick and reliable delivery to your doorstep</p>
+    </div>
+    <div style="text-align: center">
+      <div style="font-size: 48px; margin-bottom: 15px">💰</div>
+      <h3 style="color: #1a472a; margin-bottom: 10px">Great Prices</h3>
+      <p style="color: #666">Competitive prices on all your favorite items</p>
+    </div>
+    <div style="text-align: center">
+      <div style="font-size: 48px; margin-bottom: 15px">✅</div>
+      <h3 style="color: #1a472a; margin-bottom: 10px">Quality Guarantee</h3>
+      <p style="color: #666">Fresh products and guaranteed quality</p>
+    </div>
+    <div style="text-align: center">
+      <div style="font-size: 48px; margin-bottom: 15px">🛡️</div>
+      <h3 style="color: #1a472a; margin-bottom: 10px">Safe Checkout</h3>
+      <p style="color: #666">Secure and easy payment methods</p>
+    </div>
+    <div style="text-align: center">
+      <div style="font-size: 48px; margin-bottom: 15px">📞</div>
+      <h3 style="color: #1a472a; margin-bottom: 10px">Customer Support</h3>
+      <p style="color: #666">Friendly support available 24/7</p>
+    </div>
+    <div style="text-align: center">
+      <div style="font-size: 48px; margin-bottom: 15px">🎁</div>
+      <h3 style="color: #1a472a; margin-bottom: 10px">Special Offers</h3>
+      <p style="color: #666">Regular discounts and promotions</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div
+  style="
+    background: linear-gradient(135deg, #27c44f 0%, #1fa63a 100%);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 8px;
+    margin-top: 40px;
+    text-align: center;
+  "
+>
+  <h2 style="font-size: 28px; margin-bottom: 15px">Ready to Shop?</h2>
+  <p style="font-size: 16px; margin-bottom: 20px">
+    Browse our complete selection of fresh groceries
+  </p>
+  <a href="/shop/products" class="btn btn-primary" style="display: inline-block"
+    >View All Products</a
+  >
+</div>
+{% endblock %}

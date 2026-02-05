@@ -1,0 +1,317 @@
+{% extends "shop/shop_base.html" %} {% block title %}Shop - Cart{% endblock %}
+{% block content %}
+<h2 class="page-title">Shopping Cart</h2>
+
+<div style="display: grid; grid-template-columns: 1fr 350px; gap: 20px">
+  <!-- Cart Items -->
+  <main>
+    {% if cart_items %}
+    <div
+      class="card"
+      style="
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      "
+    >
+      <table style="width: 100%; border-collapse: collapse">
+        <thead>
+          <tr style="background-color: #f5f5f5; border-bottom: 2px solid #ddd">
+            <th style="padding: 15px; text-align: left; color: #1a472a">
+              Product
+            </th>
+            <th style="padding: 15px; text-align: center; color: #1a472a">
+              Price
+            </th>
+            <th style="padding: 15px; text-align: center; color: #1a472a">
+              Quantity
+            </th>
+            <th style="padding: 15px; text-align: right; color: #1a472a">
+              Total
+            </th>
+            <th style="padding: 15px; text-align: center; color: #1a472a">
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr style="border-bottom: 1px solid #eee">
+            <td style="padding: 15px">
+              <strong>{{ item.name }}</strong>
+            </td>
+            <td style="padding: 15px; text-align: center">
+              ${{ item.price | round(2) }}
+            </td>
+            <td style="padding: 15px; text-align: center">
+              <form
+                action="/shop/cart/update/{{ item.product_id }}"
+                method="post"
+                style="
+                  display: flex;
+                  gap: 5px;
+                  align-items: center;
+                  justify-content: center;
+                "
+              >
+                <input
+                  type="number"
+                  name="quantity"
+                  value="{{ item.quantity }}"
+                  min="1"
+                  style="
+                    width: 50px;
+                    padding: 5px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    text-align: center;
+                  "
+                />
+                <button
+                  type="submit"
+                  style="
+                    padding: 5px 10px;
+                    background-color: #27c44f;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 12px;
+                  "
+                >
+                  Update
+                </button>
+              </form>
+            </td>
+            <td style="padding: 15px; text-align: right; font-weight: bold">
+              ${{ item.total | round(2) }}
+            </td>
+            <td style="padding: 15px; text-align: center">
+              <form
+                action="/shop/cart/remove/{{ item.product_id }}"
+                method="post"
+                style="display: inline"
+              >
+                <button
+                  type="submit"
+                  style="
+                    padding: 5px 10px;
+                    background-color: #dc3545;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 12px;
+                  "
+                >
+                  Remove
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Continue Shopping -->
+    <div style="margin-top: 20px">
+      <a
+        href="/shop/products"
+        class="btn btn-outline"
+        style="display: inline-block"
+        >← Continue Shopping</a
+      >
+    </div>
+    {% else %}
+    <!-- Empty Cart -->
+    <div
+      style="
+        background: white;
+        padding: 60px 30px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <div style="font-size: 64px; margin-bottom: 20px">🛒</div>
+      <h3 style="color: #1a472a; font-size: 24px; margin-bottom: 10px">
+        Your cart is empty
+      </h3>
+      <p style="color: #666; margin-bottom: 30px">
+        Add some items to get started!
+      </p>
+      <a
+        href="/shop/products"
+        class="btn btn-primary"
+        style="display: inline-block"
+        >Start Shopping</a
+      >
+    </div>
+    {% endif %}
+  </main>
+
+  <!-- Cart Summary -->
+  <aside>
+    <div
+      class="card"
+      style="
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        position: sticky;
+        top: 200px;
+      "
+    >
+      <h3
+        style="
+          color: #1a472a;
+          margin-bottom: 20px;
+          padding-bottom: 15px;
+          border-bottom: 2px solid #27c44f;
+        "
+      >
+        Order Summary
+      </h3>
+
+      {% if cart_items %}
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          color: #666;
+        "
+      >
+        <span>Subtotal:</span>
+        <span>${{ total_amount | round(2) }}</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          color: #666;
+        "
+      >
+        <span>Shipping:</span>
+        <span>$0.00</span>
+      </div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          color: #666;
+        "
+      >
+        <span>Tax:</span>
+        <span>${{ (total_amount * 0.1) | round(2) }}</span>
+      </div>
+      <div
+        style="
+          border-top: 1px solid #eee;
+          padding-top: 10px;
+          margin-bottom: 20px;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a472a;
+          "
+        >
+          <span>Total:</span>
+          <span style="color: #27c44f"
+            >${{ (total_amount + (total_amount * 0.1)) | round(2) }}</span
+          >
+        </div>
+      </div>
+
+      <a
+        href="/shop/checkout"
+        class="btn btn-primary"
+        style="width: 100%; display: block; text-align: center"
+        >Proceed to Checkout</a
+      >
+      <a
+        href="/shop/products"
+        class="btn btn-secondary"
+        style="
+          width: 100%;
+          display: block;
+          text-align: center;
+          margin-top: 10px;
+        "
+        >Continue Shopping</a
+      >
+      {% else %}
+      <p style="color: #999; text-align: center; padding: 20px 0">
+        Cart is empty
+      </p>
+      {% endif %}
+
+      <!-- Promo Code -->
+      <div
+        style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee"
+      >
+        <label
+          style="
+            display: block;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #666;
+          "
+          >Have a promo code?</label
+        >
+        <div style="display: flex; gap: 5px">
+          <input
+            type="text"
+            placeholder="Enter code"
+            style="
+              flex: 1;
+              padding: 8px;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              font-size: 12px;
+            "
+          />
+          <button
+            style="
+              padding: 8px 12px;
+              background-color: #27c44f;
+              color: white;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 12px;
+            "
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+
+      <!-- Security Badge -->
+      <div
+        style="
+          margin-top: 30px;
+          padding-top: 20px;
+          border-top: 1px solid #eee;
+          text-align: center;
+          color: #999;
+          font-size: 12px;
+        "
+      >
+        <p style="margin-bottom: 5px">🛡️ Secure Checkout</p>
+        <p>Your information is safe and secure</p>
+      </div>
+    </div>
+  </aside>
+</div>
+{% endblock %}
