@@ -16,6 +16,11 @@ jobs:
         with:
           channel: stable
 
+      - name: Clean Flutter
+        run: |
+          cd frontend/flutter/smartkirana_mobile
+          flutter clean
+
       - name: Build web
         run: |
           cd frontend/flutter/smartkirana_mobile
