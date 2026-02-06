@@ -176,6 +176,16 @@ if old_auth_router:
 
 # ===== HEALTH CHECK =====
 @app.get(
+    "/health",
+    summary="Health Check",
+    description="Simple health status for Docker/Container monitoring"
+)
+def simple_health_check() -> dict:
+    """Simple health check endpoint for container monitoring"""
+    return {"status": "ok"}
+
+
+@app.get(
     "/api/health",
     summary="Health Check",
     description="API health status"
