@@ -174,6 +174,24 @@ if old_auth_router:
         "⚠️ Old auth_service router found - using new app.auth router instead")
 
 
+# ===== ROOT ENDPOINT =====
+@app.get("/", tags=["Home"])
+def root():
+    """Welcome endpoint - API documentation available at /docs"""
+    return {
+        "message": "Welcome to SmartKirana AI Grocery App",
+        "service": "GroceryAPP Backend API",
+        "version": settings.API_VERSION,
+        "status": "running",
+        "documentation": "/docs",
+        "health": "/health",
+        "api_health": "/api/health",
+        "shop": "/shop",
+        "admin": "/admin",
+        "products": "/products"
+    }
+
+
 # ===== HEALTH CHECK =====
 @app.get(
     "/health",
