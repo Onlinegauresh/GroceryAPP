@@ -18,7 +18,7 @@ jobs:
 
       - name: Build web
         run: |
-          cd frontend/flutter
+          cd frontend/flutter/smartkirana_mobile
           flutter pub get
           flutter build web
 
@@ -26,4 +26,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-build
-          path: frontend/flutter/build/web
+          path: frontend/flutter/smartkirana_mobile/build/web
